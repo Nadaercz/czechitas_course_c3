@@ -31,26 +31,78 @@ public class ToDoItemsController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult Read()
+    public List<ToDoItem> Read()
     {
-        return Ok();
+        return items;
     }
 
     [HttpGet("{toDoItemId:int}")]
     public IActionResult ReadById(int toDoItemId)
     {
+        ToDoItemCreateRequestDto todoItem;
+        try
+        {
+            var item = items.Find(x => x.ToDoItemId == toDoItemId);
+            todoItem = new(item.Name, item.Description, item.IsCompleted);
+
+        }
+        catch (ArgumentNullException ex)
+        {
+            return NotFound();
+        }
+        catch (Exception ex)
+        {
+            return Problem(ex.Message, null, StatusCodes.Status500InternalServerError);
+        }
+
         return Ok();
     }
 
     [HttpPut("{toDoItemId:int}")]
     public IActionResult UpdateById(int toDoItemId, [FromBody] ToDoItemUpdateRequestDto request)
     {
-        return Ok();
+        try
+        {
+            var newItem = request.ToDomain();
+            var todoItem = items.Find(i => i.ToDoItemId == toDoItemId);
+            if (todoItem == null)
+            {
+                return NotFound();
+            }
+            int indexOfInstance = items.FindIndex(i => i.ToDoItemId == toDoItemId);
+            items[indexOfInstance] = newItem;
+        }
+        catch (Exception ex)
+        {
+            return Problem(ex.Message, null, StatusCodes.Status500InternalServerError);
+        }
+
+        return NoContent();
     }
 
     [HttpDelete("{toDoItemId:int}")]
     public IActionResult DeleteById(int toDoItemId)
     {
-        return Ok();
+        ToDoItem todoItem;
+        try
+        {
+            todoItem = items.Find(x => x.ToDoItemId == toDoItemId);
+        }
+        catch (ArgumentNullException ex)
+        {
+            return NotFound();
+        }
+        catch (Exception ex)
+        {
+            return Problem(ex.Message, null, StatusCodes.Status500InternalServerError);
+        }
+        var isRemoted = items.Remove(todoItem);
+
+        if (!isRemoted)
+        {
+            return NotFound();
+        }
+
+        return NoContent();
     }
 }
