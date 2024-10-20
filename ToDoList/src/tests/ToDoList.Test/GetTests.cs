@@ -1,8 +1,8 @@
-namespace ToDoList.Test;
-
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Domain.Models;
 using ToDoList.WebApi.Controllers;
+
+namespace ToDoList.Test;
 
 public class GetTests
 {
@@ -19,16 +19,13 @@ public class GetTests
             IsCompleted = false
         };
         ToDoItemsController.items.Add(toDoItem);
-
         // Act
         var result = controller.Read();
         var resultResult = result.Result;
         var value = result.GetValue();
-
         // Assert
         Assert.IsType<OkObjectResult>(resultResult);
         Assert.NotNull(value);
-
         var firstItem = value.First();
         Assert.Equal(toDoItem.ToDoItemId, firstItem.Id);
         Assert.Equal(toDoItem.Description, firstItem.Description);
