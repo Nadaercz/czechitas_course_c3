@@ -60,9 +60,10 @@ public class GetTests
     {
         // Arrange
         ToDoItemsController.items.Clear();
+        var _controller = new ToDoItemsController();
 
         // Act
-        var result = controller.Read();
+        var result = _controller.Read();
 
         // Assert
         var resultResult = result.Result;
@@ -83,7 +84,7 @@ public class GetTests
         var value = result.GetValue();
         resultResult.Should().BeAssignableTo<OkObjectResult>();
         Assert.NotNull(value);
-        value.Should().BeEquivalentTo(toDoItems[id-1], item => item.Excluding(x => x.ToDoItemId));
+        value.Should().BeEquivalentTo(toDoItems[id - 1], item => item.Excluding(x => x.ToDoItemId));
     }
 
     [Fact]

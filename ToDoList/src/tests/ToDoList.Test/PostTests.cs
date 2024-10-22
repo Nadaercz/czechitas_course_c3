@@ -2,7 +2,7 @@ using System;
 
 namespace ToDoList.Test;
 
-public class ReadByIdTests
+public class PostTests
 {
 
 }
