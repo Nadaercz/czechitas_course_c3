@@ -1,13 +1,13 @@
 using ToDoList.Domain.Models;
 using ToDoList.Persistence;
-using ToDoList.Persistence.Reppositories;
+using ToDoList.Persistence.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 {
     //Configure DI
     builder.Services.AddControllers();
     builder.Services.AddDbContext<ToDoItemsContext>();
-    builder.Services.AddSingleton<IRepository<ToDoItem>, ToDoItemRepository>();
+    builder.Services.AddSingleton<IRepository<ToDoItem>, ToDoItemsRepository>();
 }
 
 var app = builder.Build();

@@ -1,9 +1,14 @@
-namespace ToDoList.Persistence.Reppositories;
+namespace ToDoList.Persistence.Repositories;
 
-using ToDoList.Domain.Models;
-
-public interface IRepository<T> where T: class
+public interface IRepository<T> where T : class
 {
     public void Create(T item);
-    // TODO: doplnit ostatni methody
+
+    public List<T> Read();
+
+    public T? ReadById(int itemId);
+
+    public void UpdateById(T item);
+
+    public void DeleteById(int itemId);
 }
