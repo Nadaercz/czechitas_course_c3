@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
     //Configure DI
     builder.Services.AddControllers();
     builder.Services.AddDbContext<ToDoItemsContext>();
-    builder.Services.AddSingleton<IRepository<ToDoItem>, ToDoItemsRepository>();
+    builder.Services.AddScoped<IRepository<ToDoItem>, ToDoItemsRepository>(); //should be AddScoped, AddSingleton is causing runtime error
 }
 
 var app = builder.Build();
