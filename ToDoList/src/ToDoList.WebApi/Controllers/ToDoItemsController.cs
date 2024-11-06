@@ -89,6 +89,19 @@ public class ToDoItemsController : ControllerBase
         {
             //retrieve the item
             repository.UpdateById(updatedItem);
+
+            //what happens when we try to update item with id that is not present in the database?
+            //currently: repository.UpdateById(updatedItem) method throws KeyNotFoundException, this exception is that catched and HTTP Put method returns InternalServerError
+            //what the web API should do (based on assignment 03.1) - when this happens, we get NotFound IActionResult
+
+            //if you want to keep the solution with KeyNotFoundException, I added catch block that would handle this
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound(); //now it is acting properly :)
+
+            //how to avoid this catch block? We can remove the check if the item with ID is present in database from the repository.UpdateById(updatedItem) method and
+            //we can check this possibility in controller - check if repository.ReadById(itemId) does not return null
         }
         catch (Exception ex)
         {
@@ -106,6 +119,7 @@ public class ToDoItemsController : ControllerBase
         try
         {
             repository.DeleteById(toDoItemId);
+            //same as in UpdateById method
         }
         catch (Exception ex)
         {
