@@ -7,6 +7,7 @@ using ToDoList.WebApi.Controllers;
 using ToDoList.Persistence.Repositories;
 using ToDoList.Domain.Models;
 using Microsoft.AspNetCore.Http;
+using NSubstitute.ExceptionExtensions;
 
 public class GetUnitTests
 {
