@@ -20,7 +20,7 @@ public class GetUnitTests
         //repositoryMock.When().Do();
         // repositoryMock.ReadAll().Throws();
         // repositoryMock.Received().ReadAll();
-        repositoryMock.Read().Returns(
+        repositoryMock.ReadAll().Returns(
             [
                 new ToDoItem{
                     Name = "testName",
@@ -37,7 +37,7 @@ public class GetUnitTests
         // Assert
         Assert.IsType<OkObjectResult>(resultResult);
         Assert.NotNull(value);
-        repositoryMock.Received(1).Read();
+        repositoryMock.Received(1).ReadAll();
     }
 
     [Fact]
@@ -46,7 +46,7 @@ public class GetUnitTests
         // Arrange
         var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
         var controller = new ToDoItemsController(repositoryMock);
-        repositoryMock.Read().Throws(new Exception());
+        repositoryMock.ReadAll().Throws(new Exception());
 
         // Act
         var result = controller.Read();
@@ -55,6 +55,6 @@ public class GetUnitTests
 
         // Assert
         Assert.IsType<OkObjectResult>(resultResult);
-        repositoryMock.Received(1).Read();
+        repositoryMock.Received(1).ReadAll();
     }
 }
