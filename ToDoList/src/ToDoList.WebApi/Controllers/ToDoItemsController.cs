@@ -111,13 +111,11 @@ public class ToDoItemsController : ControllerBase
         //try to delete the item
         try
         {
-            var itemToDelete = repository.ReadById(toDoItemId);
-            if (itemToDelete is null)
-            {
-                return NotFound(); //404
-            }
-
             repository.DeleteById(toDoItemId);
+        }
+        catch (ArgumentOutOfRangeException ex)
+        {
+            return NotFound(ex); //404
         }
         catch (Exception ex)
         {

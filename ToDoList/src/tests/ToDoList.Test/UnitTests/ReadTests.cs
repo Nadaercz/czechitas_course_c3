@@ -2,11 +2,9 @@ namespace ToDoList.Test.UnitTests;
 
 using NSubstitute;
 using Microsoft.AspNetCore.Mvc;
-using ToDoList.Domain.DTOs;
 using ToDoList.WebApi.Controllers;
 using ToDoList.Persistence.Repositories;
 using ToDoList.Domain.Models;
-using Microsoft.AspNetCore.Http;
 using NSubstitute.ExceptionExtensions;
 
 public class GetUnitTests
@@ -17,9 +15,6 @@ public class GetUnitTests
         // Arrange
         var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
         var controller = new ToDoItemsController(repositoryMock);
-        //repositoryMock.When().Do();
-        // repositoryMock.ReadAll().Throws();
-        // repositoryMock.Received().ReadAll();
         repositoryMock.ReadAll().Returns(
             [
                 new ToDoItem{
@@ -46,7 +41,7 @@ public class GetUnitTests
         // Arrange
         var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
         var controller = new ToDoItemsController(repositoryMock);
-        repositoryMock.ReadAll().Throws(new Exception());
+        repositoryMock.ReadAll().Throws<Exception>();
 
         // Act
         var result = controller.Read();
@@ -54,7 +49,7 @@ public class GetUnitTests
         var value = result.GetValue();
 
         // Assert
-        Assert.IsType<OkObjectResult>(resultResult);
+        Assert.IsType<ObjectResult>(resultResult);
         repositoryMock.Received(1).ReadAll();
     }
 }
