@@ -8,7 +8,7 @@ using ToDoList.Persistence.Repositories;
 using ToDoList.Domain.Models;
 using Microsoft.AspNetCore.Http;
 
-public class PostUnitTests
+public class PostUnitTests //the file is CreateTests, but this class is named PostUnitTests... it should be same
 {
     [Fact]
     public void Post_CreateValidRequest_ReturnsCreatedAtAction()
@@ -49,6 +49,7 @@ public class PostUnitTests
             IsCompleted: false
         );
         repositoryMock.When(r => r.Create(Arg.Any<ToDoItem>())).Do(r => throw new Exception());
+        //we can do this :) repositoryMock.When(r => r.Create(Arg.Any<ToDoItem>())).Throw(new Exception());
 
         // Act
         var result = controller.Create(request);
