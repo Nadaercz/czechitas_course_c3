@@ -7,6 +7,8 @@ using ToDoList.Domain.Models;
 using ToDoList.Persistence.Repositories;
 using ToDoList.WebApi.Controllers;
 
+//evrywhere else we are using file-scoped namespace. This is ok, but I would be better if we use it here also.
+//it looks better if we have one convention and use it
 namespace ToDoList.Test.UnitTests
 {
     public class DeleteByIdTests
@@ -50,6 +52,7 @@ namespace ToDoList.Test.UnitTests
         {
             //Arrange
             int itemId = 4;
+            //nice :) i see you understand how mocking works
             repositoryMock.When(x => x.DeleteById(itemId)).Throw<ArgumentOutOfRangeException>();
 
             // Act
@@ -57,6 +60,7 @@ namespace ToDoList.Test.UnitTests
 
             // Assert
             Assert.IsType<NotFoundObjectResult>(result);
+            //I see some copy-paste here :) be careful not to leave these comments, it can be confusing
             //mock zaregistroval jedno volání metody ReadById s argumentem toDoItem.ToDoItemId
             repositoryMock.Received(1).DeleteById(itemId);
         }
@@ -73,7 +77,8 @@ namespace ToDoList.Test.UnitTests
 
             // Assert
             Assert.IsType<ObjectResult>(result);
-            repositoryMock.Received(1).DeleteById(Arg.Any<int>());
+            repositoryMock.Received(1).DeleteById(Arg.Any<int>()); //why not toDoItem.ToDoItemId? you had it in the first test
+            //where is check that we got internal server error?
         }
     }
 }
