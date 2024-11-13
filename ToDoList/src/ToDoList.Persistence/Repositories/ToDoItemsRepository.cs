@@ -1,5 +1,6 @@
 namespace ToDoList.Persistence.Repositories;
 
+using System.Collections.Generic;
 using ToDoList.Domain.Models;
 
 public class ToDoItemsRepository : IRepository<ToDoItem>
@@ -16,28 +17,19 @@ public class ToDoItemsRepository : IRepository<ToDoItem>
         context.ToDoItems.Add(item);
         context.SaveChanges();
     }
-
-    public void Find(int toDoItemId)
+    public IEnumerable<ToDoItem> ReadAll() => context.ToDoItems.ToList();
+    public ToDoItem? ReadById(int id) => context.ToDoItems.Find(id);
+    public void Update(ToDoItem item)
     {
-        var itemToDelete = context.ToDoItems.Find(toDoItemId);
-    }
-
-    public void DeleteById(int itemId)
-    {
-        var itemToDelete = context.ToDoItems.Find(itemId) ?? throw new KeyNotFoundException();
-        context.ToDoItems.Remove(itemToDelete);
+        var foundItem = context.ToDoItems.Find(item.ToDoItemId) ?? throw new ArgumentOutOfRangeException($"ToDo item with ID {item.ToDoItemId} not found.");
+        context.Entry(foundItem).CurrentValues.SetValues(item);
         context.SaveChanges();
     }
 
-    public List<ToDoItem> Read() => context.ToDoItems.ToList();
-
-    public ToDoItem? ReadById(int itemId) => context.ToDoItems.Find(itemId);
-
-    public void UpdateById(ToDoItem? item)
+    public void DeleteById(int id)
     {
-        //retrieve the item
-        var itemToUpdate = context.ToDoItems.Find(item.ToDoItemId) ?? throw new KeyNotFoundException();
-        context.Entry(itemToUpdate).CurrentValues.SetValues(item);
+        var item = context.ToDoItems.Find(id) ?? throw new ArgumentOutOfRangeException($"ToDo item with ID {id} not found.");
+        context.ToDoItems.Remove(item);
         context.SaveChanges();
     }
 }

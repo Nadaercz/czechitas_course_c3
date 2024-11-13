@@ -41,10 +41,10 @@ public class ToDoItemsController : ControllerBase
     [HttpGet]
     public ActionResult<IEnumerable<ToDoItemGetResponseDto>> Read()
     {
-        List<ToDoItem> itemsToGet;
+        IEnumerable<ToDoItem> itemsToGet;
         try
         {
-            itemsToGet = repository.Read();
+            itemsToGet = repository.ReadAll();
         }
         catch (Exception ex)
         {
@@ -52,7 +52,7 @@ public class ToDoItemsController : ControllerBase
         }
 
         //respond to client
-        return (itemsToGet.Count == 0)
+        return (itemsToGet is null || !itemsToGet.Any())
             ? NotFound() //404
             : Ok(itemsToGet.Select(ToDoItemGetResponseDto.FromDomain)); //200
     }
@@ -88,7 +88,13 @@ public class ToDoItemsController : ControllerBase
         try
         {
             //retrieve the item
-            repository.UpdateById(updatedItem);
+            var itemToUpdate = repository.ReadById(toDoItemId);
+            if (itemToUpdate is null)
+            {
+                return NotFound(); //404
+            }
+
+            repository.Update(updatedItem);
         }
         catch (Exception ex)
         {
@@ -106,6 +112,10 @@ public class ToDoItemsController : ControllerBase
         try
         {
             repository.DeleteById(toDoItemId);
+        }
+        catch (ArgumentOutOfRangeException ex)
+        {
+            return NotFound(ex); //404
         }
         catch (Exception ex)
         {
