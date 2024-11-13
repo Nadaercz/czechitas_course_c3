@@ -1,0 +1,52 @@
+@page "/Dashboard"
+@rendermode InteractiveServer
+
+<PageTitle>Dashboard</PageTitle>
+
+<h1>Dashboard</h1>
+<br>
+<table>
+    <tr>
+        <td><button @onclick="OrderByIdAsc">Sort by Id ASC</button></td>
+        <td><button @onclick="OrderByNameAsc">Sort by Name ASC</button></td>
+        <td></td>
+        <td></td>
+    </tr>
+    @foreach (var toDoItem in toDoItems)
+    {
+        <tr>
+            <td>@toDoItem.ToDoItemId</td>
+            <td>@toDoItem.Name</td>
+            <td>@toDoItem.IsCompleted</td>
+            <td>@toDoItem.Description</td>
+        </tr>
+    }
+</table>
+
+@code
+{
+    private List<ToDoItemViev> toDoItems =
+    [
+    new ToDoItemViev() {ToDoItemId = 1, Name = "Udelat ukol na Czechitas", IsCompleted = false},
+new ToDoItemViev() {ToDoItemId = 2, Name = "Napsat email", IsCompleted = false},
+new ToDoItemViev() {ToDoItemId = 3, Name = "Deactivate account", IsCompleted = false}
+    ];
+
+    public class ToDoItemViev
+    {
+        public int ToDoItemId { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public bool IsCompleted { get; set; }
+    }
+
+    public void OrderByNameAsc()
+    {
+        toDoItems = toDoItems.OrderBy(task => task.Name).ToList();
+    }
+
+    public void OrderByIdAsc()
+    {
+        toDoItems = toDoItems.OrderBy(task => task.ToDoItemId).ToList();
+    }
+}
