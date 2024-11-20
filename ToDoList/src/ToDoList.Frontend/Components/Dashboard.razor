@@ -1,4 +1,7 @@
 @page "/Dashboard"
+@using ToDoList.Frontend.Clients
+@using ToDoList.Frontend.View
+@inject IToDoItemsClient ToDoItemsClient
 @rendermode InteractiveServer
 
 <PageTitle>Dashboard</PageTitle>
@@ -12,41 +15,42 @@
         <td></td>
         <td></td>
     </tr>
-    @foreach (var toDoItem in toDoItems)
+
+    @if (toDoItems is null)
     {
-        <tr>
-            <td>@toDoItem.ToDoItemId</td>
-            <td>@toDoItem.Name</td>
-            <td>@toDoItem.IsCompleted</td>
-            <td>@toDoItem.Description</td>
-        </tr>
+        <p>Nacitam ...</p>
+    }
+
+    @if (toDoItems is not null)
+    {
+        @foreach (var toDoItem in toDoItems)
+        {
+            <tr>
+                <td>@toDoItem.ToDoItemId</td>
+                <td>@toDoItem.Name</td>
+                <td>@toDoItem.IsCompleted</td>
+                <td>@toDoItem.Description</td>
+            </tr>
+        }
     }
 </table>
 
 @code
 {
-    private List<ToDoItemViev> toDoItems =
-    [
-    new ToDoItemViev() {ToDoItemId = 1, Name = "Udelat ukol na Czechitas", IsCompleted = false},
-new ToDoItemViev() {ToDoItemId = 2, Name = "Napsat email", IsCompleted = false},
-new ToDoItemViev() {ToDoItemId = 3, Name = "Deactivate account", IsCompleted = false}
-    ];
-
-    public class ToDoItemViev
+    protected override async Task OnInitializedAsync()
     {
-        public int ToDoItemId { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public bool IsCompleted { get; set; }
+        toDoItems = await ToDoItemsClient.ReadItemsAsync();
     }
+
+    private List<ToDoItemView>? toDoItems;
 
     public void OrderByNameAsc()
     {
-        toDoItems = toDoItems.OrderBy(task => task.Name).ToList();
+        toDoItems = toDoItems?.OrderBy(task => task.Name).ToList();
     }
 
     public void OrderByIdAsc()
     {
-        toDoItems = toDoItems.OrderBy(task => task.ToDoItemId).ToList();
+        toDoItems = toDoItems?.OrderBy(task => task.ToDoItemId).ToList();
     }
 }
