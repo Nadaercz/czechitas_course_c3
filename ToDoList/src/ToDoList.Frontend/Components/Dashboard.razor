@@ -1,0 +1,56 @@
+@page "/Dashboard"
+@using ToDoList.Frontend.Clients
+@using ToDoList.Frontend.View
+@inject IToDoItemsClient ToDoItemsClient
+@rendermode InteractiveServer
+
+<PageTitle>Dashboard</PageTitle>
+
+<h1>Dashboard</h1>
+<br>
+<table>
+    <tr>
+        <td><button @onclick="OrderByIdAsc">Order by ID</button></td>
+        <td><button @onclick="OrderByNameAsc">Order by Name</button></td>
+        <td></td>
+        <td></td>
+    </tr>
+
+    @if (toDoItems is null)
+    {
+        <p>Nacitam ...</p>
+    }
+
+    @if (toDoItems is not null)
+    {
+        @foreach (var toDoItem in toDoItems)
+        {
+            <tr>
+                <td>@toDoItem.ToDoItemId</td>
+                <td>@toDoItem.Name</td>
+                <td>@toDoItem.IsCompleted</td>
+                <td>@toDoItem.Description</td>
+            </tr>
+        }
+    }
+</table>
+
+@code
+{
+    protected override async Task OnInitializedAsync()
+    {
+        toDoItems = await ToDoItemsClient.ReadItemsAsync();
+    }
+
+    private List<ToDoItemView>? toDoItems;
+
+    public void OrderByNameAsc()
+    {
+        toDoItems = toDoItems?.OrderBy(task => task.Name).ToList();
+    }
+
+    public void OrderByIdAsc()
+    {
+        toDoItems = toDoItems?.OrderBy(task => task.ToDoItemId).ToList();
+    }
+}
