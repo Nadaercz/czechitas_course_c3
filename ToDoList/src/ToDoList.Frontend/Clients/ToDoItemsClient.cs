@@ -1,7 +1,7 @@
+namespace ToDoList.Frontend.Clients;
+
 using ToDoList.Domain.DTOs;
 using ToDoList.Frontend.View;
-
-namespace ToDoList.Frontend.Clients;
 
 public class ToDoItemsClient(HttpClient httpClient) : IToDoItemsClient
 {

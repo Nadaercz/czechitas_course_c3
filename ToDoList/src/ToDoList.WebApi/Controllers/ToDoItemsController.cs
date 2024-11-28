@@ -1,4 +1,6 @@
 namespace ToDoList.WebApi.Controllers;
+
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Domain.DTOs;
 using ToDoList.Domain.Models;
@@ -6,17 +8,12 @@ using ToDoList.Persistence.Repositories;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ToDoItemsController : ControllerBase
+public class ToDoItemsController(IRepositoryAsync<ToDoItem> repository) : ControllerBase
 {
-    private readonly IRepository<ToDoItem> repository;
-
-    public ToDoItemsController(IRepository<ToDoItem> repository)
-    {
-        this.repository = repository;
-    }
+    private readonly IRepositoryAsync<ToDoItem> repository = repository;
 
     [HttpPost]
-    public ActionResult<ToDoItemGetResponseDto> Create(ToDoItemCreateRequestDto request)
+    public async Task<ActionResult<ToDoItemGetResponseDto>> CreateAsync(ToDoItemCreateRequestDto request)
     {
         //map to Domain object as soon as possible
         var item = request.ToDomain();
@@ -24,7 +21,7 @@ public class ToDoItemsController : ControllerBase
         //try to create an item
         try
         {
-            repository.Create(item);
+            await repository.CreateAsync(item);
         }
         catch (Exception ex)
         {
@@ -33,18 +30,18 @@ public class ToDoItemsController : ControllerBase
 
         //respond to client
         return CreatedAtAction(
-            nameof(ReadById),
+            nameof(ReadByIdAsync),
             new { toDoItemId = item.ToDoItemId },
             ToDoItemGetResponseDto.FromDomain(item)); //201
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<ToDoItemGetResponseDto>> Read()
+    public async Task<ActionResult<IEnumerable<ToDoItemGetResponseDto>>> ReadAsync()
     {
         IEnumerable<ToDoItem> itemsToGet;
         try
         {
-            itemsToGet = repository.ReadAll();
+            itemsToGet = await repository.ReadAllAsync();
         }
         catch (Exception ex)
         {
@@ -58,13 +55,13 @@ public class ToDoItemsController : ControllerBase
     }
 
     [HttpGet("{toDoItemId:int}")]
-    public ActionResult<ToDoItemGetResponseDto> ReadById(int toDoItemId)
+    public async Task<ActionResult<ToDoItemGetResponseDto>> ReadByIdAsync(int toDoItemId)
     {
         //try to retrieve the item by id
         ToDoItem? itemToGet;
         try
         {
-            itemToGet = repository.ReadById(toDoItemId);
+            itemToGet = await repository.ReadByIdAsync(toDoItemId);
         }
         catch (Exception ex)
         {
@@ -78,7 +75,7 @@ public class ToDoItemsController : ControllerBase
     }
 
     [HttpPut("{toDoItemId:int}")]
-    public IActionResult UpdateById(int toDoItemId, [FromBody] ToDoItemUpdateRequestDto request)
+    public async Task<IActionResult> UpdateByIdAsync(int toDoItemId, [FromBody] ToDoItemUpdateRequestDto request)
     {
         //map to Domain object as soon as possible
         var updatedItem = request.ToDomain();
@@ -88,13 +85,13 @@ public class ToDoItemsController : ControllerBase
         try
         {
             //retrieve the item
-            var itemToUpdate = repository.ReadById(toDoItemId);
+            var itemToUpdate = await repository.ReadByIdAsync(toDoItemId);
             if (itemToUpdate is null)
             {
                 return NotFound(); //404
             }
 
-            repository.Update(updatedItem);
+            await repository.UpdateAsync(updatedItem);
         }
         catch (Exception ex)
         {
@@ -106,12 +103,12 @@ public class ToDoItemsController : ControllerBase
     }
 
     [HttpDelete("{toDoItemId:int}")]
-    public IActionResult DeleteById(int toDoItemId)
+    public async Task<IActionResult> DeleteByIdAsync(int toDoItemId)
     {
         //try to delete the item
         try
         {
-            repository.DeleteById(toDoItemId);
+            await repository.DeleteByIdAsync(toDoItemId);
         }
         catch (ArgumentOutOfRangeException ex)
         {

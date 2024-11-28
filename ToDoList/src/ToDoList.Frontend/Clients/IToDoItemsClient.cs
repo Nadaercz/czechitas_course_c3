@@ -1,10 +1,8 @@
-using System;
+namespace ToDoList.Frontend.Clients;
+
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using ToDoList.Frontend.View;
-
-namespace ToDoList.Frontend.Clients;
 
 public interface IToDoItemsClient
 {

@@ -1,37 +1,35 @@
+namespace ToDoList.Test.UnitTests;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using ToDoList.Domain.Models;
 using ToDoList.Persistence.Repositories;
 using ToDoList.WebApi.Controllers;
 
-namespace ToDoList.Test.UnitTests
+public class ReadByIdTests
 {
-    public class ReadByIdTests
+    [Fact]
+    public async Task Get_ReadAllAndSomeItemIsAvailable_ReturnOk()
     {
-        [Fact]
-        public void Get_ReadAllAndSomeItemIsAvailable_ReturnOk()
-        {
-            // Arrange
-            var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
-            var controller = new ToDoItemsController(repositoryMock);
-            repositoryMock.ReadAll().Returns(
-                [
-                    new ToDoItem{
-                        Name = "testName",
-                        Description = "testDescription",
-                        IsCompleted = false
-                    }
-                ]);
+        // Arrange
+        var repositoryMock = Substitute.For<IRepositoryAsync<ToDoItem>>();
+        var controller = new ToDoItemsController(repositoryMock);
+        repositoryMock.ReadAllAsync().Returns(
+            [
+                new ToDoItem{
+                    Name = "testName",
+                    Description = "testDescription",
+                    IsCompleted = false
+                }
+            ]);
 
-            // Act
-            var result = controller.Read();
-            var resultResult = result.Result;
-            var value = result.GetValue();
+        // Act
+        var result = await controller.ReadAsync();
+        var resultResult = result.Result;
+        var value = result.GetValue();
 
-            // Assert
-            Assert.IsType<OkObjectResult>(resultResult);
-            Assert.NotNull(value);
-            repositoryMock.Received(1).ReadAll();
-        }
+        // Assert
+        Assert.IsType<OkObjectResult>(resultResult);
+        Assert.NotNull(value);
+        await repositoryMock.Received(1).ReadAllAsync();
     }
 }
