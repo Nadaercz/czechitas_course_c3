@@ -55,6 +55,7 @@ public class ToDoItemsController(IRepositoryAsync<ToDoItem> repository) : Contro
     }
 
     [HttpGet("{toDoItemId:int}")]
+    [ActionName(nameof(ReadByIdAsync))] //please see section Otazky on Discord, I do not understand it either why this needs to be here :), absence of this will cause that http post will throw error
     public async Task<ActionResult<ToDoItemGetResponseDto>> ReadByIdAsync(int toDoItemId)
     {
         //try to retrieve the item by id
