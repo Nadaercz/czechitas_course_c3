@@ -13,6 +13,7 @@ public class ToDoItemsController(IRepositoryAsync<ToDoItem> repository) : Contro
     private readonly IRepositoryAsync<ToDoItem> repository = repository;
 
     [HttpPost]
+    [ActionName(nameof(CreateAsync))]
     public async Task<ActionResult<ToDoItemGetResponseDto>> CreateAsync(ToDoItemCreateRequestDto request)
     {
         //map to Domain object as soon as possible
@@ -36,6 +37,7 @@ public class ToDoItemsController(IRepositoryAsync<ToDoItem> repository) : Contro
     }
 
     [HttpGet]
+    [ActionName(nameof(ReadAsync))]
     public async Task<ActionResult<IEnumerable<ToDoItemGetResponseDto>>> ReadAsync()
     {
         IEnumerable<ToDoItem> itemsToGet;
@@ -55,6 +57,7 @@ public class ToDoItemsController(IRepositoryAsync<ToDoItem> repository) : Contro
     }
 
     [HttpGet("{toDoItemId:int}")]
+    [ActionName(nameof(ReadByIdAsync))]
     public async Task<ActionResult<ToDoItemGetResponseDto>> ReadByIdAsync(int toDoItemId)
     {
         //try to retrieve the item by id
@@ -75,6 +78,7 @@ public class ToDoItemsController(IRepositoryAsync<ToDoItem> repository) : Contro
     }
 
     [HttpPut("{toDoItemId:int}")]
+    [ActionName(nameof(UpdateByIdAsync))]
     public async Task<IActionResult> UpdateByIdAsync(int toDoItemId, [FromBody] ToDoItemUpdateRequestDto request)
     {
         //map to Domain object as soon as possible
@@ -103,6 +107,7 @@ public class ToDoItemsController(IRepositoryAsync<ToDoItem> repository) : Contro
     }
 
     [HttpDelete("{toDoItemId:int}")]
+    [ActionName(nameof(DeleteByIdAsync))]
     public async Task<IActionResult> DeleteByIdAsync(int toDoItemId)
     {
         //try to delete the item

@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Http;
 using NSubstitute.ExceptionExtensions;
 using NSubstitute.ReturnsExtensions;
 
-public class GetUnitTests
+public class GetTests
 {
     [Fact]
     public async Task Get_ReadWhenSomeItemAvailable_ReturnsOk()
