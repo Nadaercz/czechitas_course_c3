@@ -9,7 +9,7 @@ using ToDoList.Domain.Models;
 using Microsoft.AspNetCore.Http;
 using NSubstitute.ReturnsExtensions;
 
-public class PutUnitTests
+public class PutTests
 {
     [Fact]
     public async Task Put_UpdateByIdWhenItemUpdated_ReturnsNoContent()

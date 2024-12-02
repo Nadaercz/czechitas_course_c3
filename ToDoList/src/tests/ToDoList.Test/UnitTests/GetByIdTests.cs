@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Http;
 using NSubstitute.ExceptionExtensions;
 using NSubstitute.ReturnsExtensions;
 
-public class GetByIdUnitTests
+public class GetByIdTests
 {
     [Fact]
     public async Task Get_ReadByIdWhenSomeItemAvailable_ReturnsOk()

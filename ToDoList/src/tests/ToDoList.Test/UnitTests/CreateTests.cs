@@ -8,7 +8,7 @@ using ToDoList.Persistence.Repositories;
 using ToDoList.Domain.Models;
 using Microsoft.AspNetCore.Http;
 
-public class PostUnitTests
+public class CreateTests
 {
     [Fact]
     public async Task Post_CreateValidRequest_ReturnsCreatedAtAction()
@@ -52,7 +52,7 @@ public class PostUnitTests
             IsCompleted: false,
             Category: "HouseTasks"
         );
-        repositoryMock.When(r => r.CreateAsync(Arg.Any<ToDoItem>())).Do(r => throw new Exception());
+        repositoryMock.When(r => r.CreateAsync(Arg.Any<ToDoItem>())).Throw(new Exception());
 
         // Act
         var result = await controller.CreateAsync(request);

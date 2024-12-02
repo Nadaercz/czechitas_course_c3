@@ -5,6 +5,7 @@ using NSubstitute;
 using ToDoList.Domain.Models;
 using ToDoList.WebApi.Controllers;
 using ToDoList.Persistence.Repositories;
+using Microsoft.AspNetCore.Http;
 
 public class DeleteByIdTests
 {
@@ -16,7 +17,6 @@ public class DeleteByIdTests
     {
         repositoryMock = Substitute.For<IRepositoryAsync<ToDoItem>>();
         controller = new ToDoItemsController(repositoryMock);
-        //předpřipravený
         toDoItem = new ToDoItem
         {
             Name = "testItem",
@@ -31,7 +31,6 @@ public class DeleteByIdTests
     public async Task Delete_ValidItemId_ReturnsNoContent()
     {
         // Arrange
-        //možnost A - ReadById pro jakýkoliv argument vrátí náš předpřipravený toDoItem
         await repositoryMock.ReadByIdAsync(Arg.Any<int>());
 
         // Act
@@ -39,7 +38,6 @@ public class DeleteByIdTests
 
         // Assert
         Assert.IsType<NoContentResult>(result);
-        //mock zaregistroval jedno volání metody Delete s argumentem toDoItem
         await repositoryMock.Received(1).DeleteByIdAsync(toDoItem.ToDoItemId);
     }
 
@@ -55,7 +53,6 @@ public class DeleteByIdTests
 
         // Assert
         Assert.IsType<NotFoundObjectResult>(result);
-        //mock zaregistroval jedno volání metody ReadById s argumentem toDoItem.ToDoItemId
         await repositoryMock.Received(1).DeleteByIdAsync(itemId);
     }
 
@@ -71,6 +68,7 @@ public class DeleteByIdTests
 
         // Assert
         Assert.IsType<ObjectResult>(result);
-        await repositoryMock.Received(1).DeleteByIdAsync(Arg.Any<int>());
+        await repositoryMock.Received(1).DeleteByIdAsync(toDoItem.ToDoItemId);
+        Assert.Equal(StatusCodes.Status500InternalServerError, ((ObjectResult)result).StatusCode);
     }
 }
