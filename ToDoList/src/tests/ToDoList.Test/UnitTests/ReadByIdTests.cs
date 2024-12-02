@@ -19,7 +19,7 @@ public class ReadByIdTests
                     Name = "testName",
                     Description = "testDescription",
                     IsCompleted = false,
-                    Category = Categories.HouseTasks
+                    Category = "HouseTasks"
                 }
             ]);
 

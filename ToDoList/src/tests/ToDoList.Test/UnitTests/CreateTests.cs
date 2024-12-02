@@ -20,7 +20,7 @@ public class PostUnitTests
             Name: "Jmeno",
             Description: "Popis",
             IsCompleted: false,
-            Category: Categories.HouseTasks
+            Category: "HouseTasks"
         );
 
         // Act
@@ -50,7 +50,7 @@ public class PostUnitTests
             Name: "Jmeno",
             Description: "Popis",
             IsCompleted: false,
-            Category: Categories.HouseTasks
+            Category: "HouseTasks"
         );
         repositoryMock.When(r => r.CreateAsync(Arg.Any<ToDoItem>())).Do(r => throw new Exception());
 

@@ -21,7 +21,7 @@ public class PutUnitTests
             Name: "Jmeno",
             Description: "Popis",
             IsCompleted: false,
-            Category: Categories.WorkTasks
+            Category: "HouseTasks"
         );
         var someId = 1;
         var readToDoItem = new ToDoItem { Name = "Jmeno", Description = "Popis", IsCompleted = false, ToDoItemId = someId };
@@ -46,7 +46,7 @@ public class PutUnitTests
             Name: "Jmeno",
             Description: "Popis",
             IsCompleted: false,
-            Category: Categories.StudyTasks
+            Category: "HouseTasks"
         );
         repositoryMock.ReadByIdAsync(Arg.Any<int>()).ReturnsNull();
         var someId = 1;
@@ -69,7 +69,7 @@ public class PutUnitTests
             Name: "Jmeno",
             Description: "Popis",
             IsCompleted: false,
-            Category: Categories.ParentTasks
+            Category: "HouseTasks"
         );
         var someId = 1;
         var readToDoItem = new ToDoItem { Name = "Jmeno", Description = "Popis", IsCompleted = false, ToDoItemId = someId };

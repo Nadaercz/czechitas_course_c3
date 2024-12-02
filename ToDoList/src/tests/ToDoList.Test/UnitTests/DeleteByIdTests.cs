@@ -23,7 +23,7 @@ public class DeleteByIdTests
             Description = "testDescription",
             IsCompleted = false,
             ToDoItemId = 1,
-            Category = Categories.HouseTasks
+            Category = "HouseTasks"
         };
     }
 
