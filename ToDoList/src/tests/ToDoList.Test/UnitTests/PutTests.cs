@@ -20,7 +20,8 @@ public class PutUnitTests
         var request = new ToDoItemUpdateRequestDto(
             Name: "Jmeno",
             Description: "Popis",
-            IsCompleted: false
+            IsCompleted: false,
+            Category: Categories.WorkTasks
         );
         var someId = 1;
         var readToDoItem = new ToDoItem { Name = "Jmeno", Description = "Popis", IsCompleted = false, ToDoItemId = someId };
@@ -44,7 +45,8 @@ public class PutUnitTests
         var request = new ToDoItemUpdateRequestDto(
             Name: "Jmeno",
             Description: "Popis",
-            IsCompleted: false
+            IsCompleted: false,
+            Category: Categories.StudyTasks
         );
         repositoryMock.ReadByIdAsync(Arg.Any<int>()).ReturnsNull();
         var someId = 1;
@@ -66,7 +68,8 @@ public class PutUnitTests
         var request = new ToDoItemUpdateRequestDto(
             Name: "Jmeno",
             Description: "Popis",
-            IsCompleted: false
+            IsCompleted: false,
+            Category: Categories.ParentTasks
         );
         var someId = 1;
         var readToDoItem = new ToDoItem { Name = "Jmeno", Description = "Popis", IsCompleted = false, ToDoItemId = someId };

@@ -18,7 +18,8 @@ public class ReadByIdTests
                 new ToDoItem{
                     Name = "testName",
                     Description = "testDescription",
-                    IsCompleted = false
+                    IsCompleted = false,
+                    Category = Categories.HouseTasks
                 }
             ]);
 

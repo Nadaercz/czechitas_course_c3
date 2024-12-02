@@ -19,7 +19,8 @@ public class PostUnitTests
         var request = new ToDoItemCreateRequestDto(
             Name: "Jmeno",
             Description: "Popis",
-            IsCompleted: false
+            IsCompleted: false,
+            Category: Categories.HouseTasks
         );
 
         // Act
@@ -48,7 +49,8 @@ public class PostUnitTests
         var request = new ToDoItemCreateRequestDto(
             Name: "Jmeno",
             Description: "Popis",
-            IsCompleted: false
+            IsCompleted: false,
+            Category: Categories.HouseTasks
         );
         repositoryMock.When(r => r.CreateAsync(Arg.Any<ToDoItem>())).Do(r => throw new Exception());
 
