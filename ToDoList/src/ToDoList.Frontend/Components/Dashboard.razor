@@ -1,39 +1,47 @@
-@page "/Dashboard"
+﻿@using ToDoList.Frontend.Views
 @using ToDoList.Frontend.Clients
-@using ToDoList.Frontend.View
 @inject IToDoItemsClient ToDoItemsClient
+@inject NavigationManager NavigationManager
 @rendermode InteractiveServer
 
-<PageTitle>Dashboard</PageTitle>
-
 <h1>Dashboard</h1>
-<br>
-<table>
-    <tr>
-        <td><button @onclick="OrderByIdAsc">Order by ID</button></td>
-        <td><button @onclick="OrderByNameAsc">Order by Name</button></td>
-        <td></td>
-        <td></td>
-    </tr>
 
-    @if (toDoItems is null)
-    {
-        <p>Nacitam ...</p>
-    }
-
-    @if (toDoItems is not null)
-    {
-        @foreach (var toDoItem in toDoItems)
+<table class="table table-hover mt-5">
+    <thead class="table-dark">
+        <th>Id</th>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Description</th>
+        <th>Completed</th>
+        <th>Actions</th>
+    </thead>
+    <tbody>
+        @if (toDoItems is null)
         {
-            <tr>
-                <td>@toDoItem.ToDoItemId</td>
-                <td>@toDoItem.Name</td>
-                <td>@toDoItem.IsCompleted</td>
-                <td>@toDoItem.Description</td>
-            </tr>
+            <p>Nacitam...</p>
         }
-    }
+
+        @if (toDoItems is not null)
+        {
+            @foreach (var toDoItem in toDoItems)
+            {
+                <tr class=@ColoredRowByCompletedFlag(@toDoItem.IsCompleted)>
+                    <td>@toDoItem.ToDoItemId</td>
+                    <td>@toDoItem.Name</td>
+                    <td>@toDoItem.Category</td>
+                    <td>@toDoItem.Description</td>
+                    <td>@toDoItem.IsCompleted</td>
+                    <div>
+                        <td><button class="btn btn-success" @onclick="() => EditItem(toDoItem)">Edit</button></td>
+                        <td><button class="btn btn-secondary" @onclick="() => DeleteItem(toDoItem)">Delete</button></td>
+                    </div>
+                </tr>
+            }
+        }
+    </tbody>
 </table>
+<button class="btn btn-success" @onclick="OrderById">Seradit Podle Id</button>
+<button class="btn btn-success" @onclick="OrderByName">Seradit Podle Jmena</button>
 
 @code
 {
@@ -44,13 +52,32 @@
 
     private List<ToDoItemView>? toDoItems;
 
-    public void OrderByNameAsc()
+    public void OrderByName()
     {
-        toDoItems = toDoItems?.OrderBy(task => task.Name).ToList();
+        toDoItems = toDoItems?.OrderBy(item => item.Name).ToList();
+    }
+    public void OrderById()
+    {
+        toDoItems = toDoItems?.OrderBy(item => item.ToDoItemId).ToList();
     }
 
-    public void OrderByIdAsc()
+    public void EditItem(ToDoItemView toDoItem)
     {
-        toDoItems = toDoItems?.OrderBy(task => task.ToDoItemId).ToList();
+        NavigationManager.NavigateTo($"editToDoItem/{toDoItem.ToDoItemId}");
+    }
+
+    public async void DeleteItem(ToDoItemView toDoItem)
+    {
+        // TODO: call refresh after delete, added extra window with
+        // question if item should be deleted
+        await ToDoItemsClient.DeleteItemAsync(toDoItem);
+    }
+
+    public string ColoredRowByCompletedFlag(bool isCompleted)
+    {
+        if (isCompleted)
+            return "table-info";
+
+        return "table-success";
     }
 }
