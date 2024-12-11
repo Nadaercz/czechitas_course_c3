@@ -1,10 +1,10 @@
-# Feedback assignment 04.1
+# Feedback Final Project
 
-Great work, I can see that this is not the first time you are writing unit tests.
+I consider the project done, but there are few things I am not contend with.
+1) you mix czech and english in the code (Seradit Podle Id button, Nacitam text,....) Either you just English or Czech (I would prefer English)
+2) When you click the delete button in Dashboard, the changes are not propagated to UI - it can cause some issues (Edit item that was deleted)
+3) The buttons in dashboard - please atleast write some text what the buttons do :wink:
+4) There are still some methods in ToDoItemsRepository that can be improved (use FindAsync, not Find)
 
-A bit shame that you did not write any test for Update or Create methods :/
 
-I would suggest having separate test files for Read and ReadById methods - they are not the same even though they both have similar functionality.
-
-There is a slight problem with your tests - they are not independent. When you launch single test, all will pass. But when I tried to launch them all at once, all of them failed. But this is most probably due to the static List in controller, so its ok for now, we will be removing it shortly :)
-Just be beware of this, I suspect that CI pipeline will scream that some tests are failing when I will create pull request with this feedback.
+Otherwise good job, it does what is required :wink: Congrats!

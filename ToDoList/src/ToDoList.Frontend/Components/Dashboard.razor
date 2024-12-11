@@ -77,6 +77,7 @@
         // TODO: call refresh after delete, added extra window with
         // question if item should be deleted
         await ToDoItemsClient.DeleteItemAsync(toDoItem);
+         //we need to refresh ToDoItems - otherwise we still see in the dashboard the deleted item!!! - you have it in TODO :)
     }
 
     public async Task ToggleCompletion(ToDoItemView toDoItem)
