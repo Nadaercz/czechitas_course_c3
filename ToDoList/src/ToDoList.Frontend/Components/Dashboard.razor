@@ -31,10 +31,16 @@
                     <td>@toDoItem.Category</td>
                     <td>@toDoItem.Description</td>
                     <td>@toDoItem.IsCompleted</td>
-                    <div>
-                        <td><button class="btn btn-success" @onclick="() => EditItem(toDoItem)">Edit</button></td>
-                        <td><button class="btn btn-secondary" @onclick="() => DeleteItem(toDoItem)">Delete</button></td>
-                    </div>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <button class="btn btn-success" @onclick="() => EditItem(toDoItem)"><i
+                                    class="bi bi-pencil-square"></i></button>
+                            <button class="btn btn-danger" @onclick="() => DeleteItem(toDoItem)"><i
+                                    class="bi bi-trash"></i></button>
+                            <button class="btn btn-warning btn-sm" @onclick="() => ToggleCompletion(toDoItem)"><i
+                                    class="bi @(toDoItem.IsCompleted ? "bi-check-circle" : "bi-circle")"></i></button>
+                        </div>
+                    </td>
                 </tr>
             }
         }
@@ -71,6 +77,12 @@
         // TODO: call refresh after delete, added extra window with
         // question if item should be deleted
         await ToDoItemsClient.DeleteItemAsync(toDoItem);
+    }
+
+    public async Task ToggleCompletion(ToDoItemView toDoItem)
+    {
+        toDoItem.IsCompleted = !toDoItem.IsCompleted;
+        await ToDoItemsClient.UpdateItemAsync(toDoItem);
     }
 
     public string ColoredRowByCompletedFlag(bool isCompleted)
